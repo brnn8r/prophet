@@ -1,4 +1,4 @@
-FROM amd64/python:3.8-slim
+FROM continuumio/miniconda:4.7.12
 
 EXPOSE 5000
 
@@ -11,16 +11,22 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ARG APP_DIR=/usr/src/app/
+ARG ENV_NAME=prophet
 
 RUN mkdir -p $APP_DIR
 
-COPY *requirements.txt $APP_DIR
+COPY environment.yml $APP_DIR
 COPY app/* $APP_DIR
+
 WORKDIR $APP_DIR
 
-RUN pip install --upgrade pip \
-    && pip install --upgrade setuptools \
-    && pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir -r fbprophet-requirements.txt
+RUN conda env create -f environment.yml 
 
-CMD ["python","app.py"]
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "$ENV_NAME", "/bin/bash", "-c"]
+
+# Make sure the environment is activated:
+RUN echo "Make sure fbprophet is installed:"
+RUN python -c "import fbprophet"
+
+ENTRYPOINT ["conda", "run", "-n", "$ENV_NAME", "python", "app.py"]

@@ -1,0 +1,14 @@
+name: prophet
+channels:
+    - anaconda
+    - conda-forge
+dependencies:
+    - python=3.7
+    - Cython=0.29
+    - numpy=1.18
+    - pandas=1.0
+    - flask=1.1.2
+    - flask-restful=0.3.8
+    - convertdate=2.1
+    - pystan=2.19
+    - fbprophet=0.6
