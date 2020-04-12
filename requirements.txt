@@ -1,7 +1,5 @@
 Cython==0.29.16
 numpy==1.18.2
 pandas==1.0.3
-pystan==2.19.1.1
-fbprophet==0.6
 Flask==1.1.2
 Flask-RESTful==0.3.8
