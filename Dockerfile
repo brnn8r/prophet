@@ -15,7 +15,6 @@ ARG APP_DIR=/usr/src/app/
 RUN mkdir -p $APP_DIR
 
 COPY environment.yml $APP_DIR
-COPY app/* $APP_DIR
 
 WORKDIR $APP_DIR
 
@@ -24,8 +23,10 @@ RUN conda env create -f environment.yml
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "-n", "prophet", "/bin/bash", "-c"]
 
+COPY app/* $APP_DIR
+
 # Make sure the environment is activated:
 RUN echo "Make sure fbprophet is installed:"
 RUN python -c "import fbprophet; import flask"
 
-ENTRYPOINT ["conda", "run", "-n", "prophet", "python", "app.py"]
+CMD ["conda", "run", "-n", "prophet", "python", "app.py"]
