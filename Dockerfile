@@ -11,7 +11,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ARG APP_DIR=/usr/src/app/
-ARG ENV_NAME=prophet
 
 RUN mkdir -p $APP_DIR
 
@@ -23,10 +22,10 @@ WORKDIR $APP_DIR
 RUN conda env create -f environment.yml 
 
 # Make RUN commands use the new environment:
-SHELL ["conda", "run", "-n", "$ENV_NAME", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "prophet", "/bin/bash", "-c"]
 
 # Make sure the environment is activated:
 RUN echo "Make sure fbprophet is installed:"
-RUN python -c "import fbprophet"
+RUN python -c "import fbprophet; import flask"
 
-ENTRYPOINT ["conda", "run", "-n", "$ENV_NAME", "python", "app.py"]
+ENTRYPOINT ["conda", "run", "-n", "prophet", "python", "app.py"]
