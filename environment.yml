@@ -12,3 +12,5 @@ dependencies:
     - convertdate=2.1
     - pystan=2.19
     - fbprophet=0.6
+    - uwsgi=2.0
+    - libiconv=1.15

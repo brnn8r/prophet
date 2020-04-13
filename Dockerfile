@@ -29,4 +29,4 @@ COPY app/* $APP_DIR
 RUN echo "Make sure fbprophet is installed:"
 RUN python -c "import fbprophet; import flask"
 
-CMD ["conda", "run", "-n", "prophet", "python", "app.py"]
+CMD ["conda", "run", "-n", "prophet", "uwsgi", "prophet-uwsgi.ini"]
