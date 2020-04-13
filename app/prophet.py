@@ -9,17 +9,24 @@ api = Api(app)
 
 class DataFile(Resource):
     def post(self):
+        
+        try:
+            periods = request.args.get('periods') or 365
+            periods = int(periods)
 
-       df = pd.read_csv(io.BytesIO(request.data), encoding='utf8')
-
-       model = Prophet()
-       model.fit(df)
-
-       future_df = model.make_future_dataframe(periods=365)
-
-       forecast = model.predict(future_df)
-
-       return forecast.to_csv()
+            df = pd.read_csv(io.BytesIO(request.data), encoding='utf8')
+            
+            model = Prophet()
+            
+            model.fit(df)
+            
+            future_df = model.make_future_dataframe(periods=periods)
+            
+            forecast = model.predict(future_df)
+            
+            return forecast.to_csv()
+        except Exception as e:
+            return str(e)
 
 api.add_resource(DataFile, '/predict')
 
